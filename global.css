@@ -1,0 +1,115 @@
+html{
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  line-height: normal;
+  perspective: 1000px;
+  position: relative;
+}
+.inro, .content{
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  transform: translateX(-100%);
+  animation: slideIn 2s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Responsive styles using media queries */
+@media (max-width: 768px) {
+  /* Adjust styles for screens up to 768px wide */
+  .intro {
+    text-align: left;
+  }
+  .madelyn-torff2 a{
+    display: none;
+  }
+
+  .buttons {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Adjust styles for screens up to 480px wide */
+  .nav2 {
+    flex-direction: column;
+  }
+
+  .tab-default4 {
+    margin-bottom: 10px;
+  }
+
+  .button-primary1,
+  .button-secondary {
+    display: block;
+    margin: 10px auto;
+  }
+}
+
+:root {
+  /* fonts */
+  --title-h2: "Playfair Display";
+  --body-24: Nunito;
+  --font-roboto: Roboto;
+  --body-18: Raleway;
+  --font-comfortaa: Comfortaa;
+  --font-inter: Inter;
+
+  /* font sizes */
+  --title-h2-size: 48px;
+  --font-size-base: 16px;
+  --body-18-size: 18px;
+  --body-24-size: 24px;
+  --title-h1-size: 64px;
+  --font-size-xl: 20px;
+  --font-size-21xl: 40px;
+  --font-size-xs: 12px;
+
+  /* Colors */
+  --font-medium-emphasis: #828282;
+  --font-high-emphasis: #25282b;
+  --bg-white: #fff;
+  --brand-yellow: #62d6c1;
+  --color-aliceblue: #e8ecf4;
+  --font-low: #9a9fa8;
+  --color-darkgray-100: #9f9e9e;
+  --gray-1: #333;
+  --color-gainsboro: #d9d9d9;
+
+  /* Gaps */
+  --gap-125xl: 144px;
+  --gap-9xs: 4px;
+  --gap-37xl: 56px;
+  --gap-13xl: 32px;
+  --gap-5xl: 24px;
+  --gap-5xs: 8px;
+  --gap-19xl: 38px;
+  --gap-69xl: 88px;
+  --gap-759xl: 778px;
+  --gap-29xl: 48px;
+  --gap-11xs: 2px;
+  --gap-xs: 12px;
+  --gap-61xl: 80px;
+
+  /* Paddings */
+  --padding-5xs: 8px;
+  --padding-5xl: 24px;
+  --padding-101xl: 120px;
+  --padding-19xl-9: 38.9px;
+
+  /* Border radiuses */
+  --br-11xs: 2px;
+  --br-5xs: 8px;
+  --br-581xl: 600px;
+  --br-5xl: 24px;
+}
