@@ -823,7 +823,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // About section animation
     function animateAboutSection() {
         const sectionTitle = document.querySelector('#about .section-title');
-        const aboutImage = document.querySelector('.image-container');
+        const aboutImage = document.querySelector('.about-image');
         const aboutText = document.querySelector('.about-text');
         const skillItems = document.querySelectorAll('.skills span');
         
@@ -842,7 +842,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionTitle.style.animation = 'titleRotateIn 1.2s ease-out forwards';
         
         // Animate the image with a reveal effect
-        aboutImage.style.transform = 'translateX(-100%)';
+        aboutImage.style.transform = 'translateX(-50px)';
         aboutImage.style.opacity = '0';
         aboutImage.style.transition = 'all 1s cubic-bezier(0.17, 0.84, 0.44, 1)';
         
@@ -850,15 +850,7 @@ document.addEventListener('DOMContentLoaded', function() {
             aboutImage.style.transform = 'translateX(0)';
             aboutImage.style.opacity = '1';
             
-            // Add ripple effect to image
-            const ripple = document.createElement('div');
-            ripple.className = 'image-ripple';
-            aboutImage.appendChild(ripple);
-            
-            // Remove ripple after animation
-            setTimeout(() => {
-                aboutImage.removeChild(ripple);
-            }, 1500);
+            // Don't add ripple effect to avoid interference
         }, 300);
         
         // Animate the text with a fade-in-up effect

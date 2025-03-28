@@ -589,12 +589,10 @@ nav ul li a.active::after {
 .image-container {
     width: 100%;
     height: 400px;
-    background: url('Card Images/profile_image.jpg');
-    background-size: cover;
-    background-position: center;
     border-radius: 15px;
     position: relative;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
 }
 
 .image-container::before {
@@ -604,8 +602,18 @@ nav ul li a.active::after {
     height: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(45deg, rgba(255, 62, 108, 0.3), rgba(0, 200, 255, 0.3));
+    background: linear-gradient(45deg, rgba(255, 62, 108, 0.2), rgba(0, 200, 255, 0.2));
     border-radius: 15px;
+    z-index: 0;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    position: relative;
+    z-index: 1;
 }
 
 .about-text {
