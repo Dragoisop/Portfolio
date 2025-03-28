@@ -42,6 +42,22 @@
     nav ul li a:active {
         background: rgba(255, 62, 108, 0.2) !important;
     }
+    
+    .about-content {
+        flex-direction: column;
+    }
+    
+    .about-image {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 30px;
+    }
+    
+    .image-container {
+        height: 300px;
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 /* High-density displays optimization */
@@ -54,6 +70,10 @@
     
     .image-container {
         background-size: cover;
+    }
+    
+    .image-container img {
+        object-fit: cover;
     }
 }
 
