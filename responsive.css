@@ -1,0 +1,176 @@
+/* Responsive CSS for additional device-specific optimizations */
+
+/* Fix for iOS Safari 100vh bug */
+@supports (-webkit-touch-callout: none) {
+    .hero, .modal {
+        height: -webkit-fill-available;
+    }
+}
+
+/* Mobile menu fixes */
+@media screen and (max-width: 768px) {
+    /* Fix mobile menu positioning on iOS */
+    header {
+        position: fixed !important;
+        z-index: 1000 !important;
+    }
+    
+    /* Ensure menu toggle is visible */
+    .mobile-menu-toggle {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Ensure nav menu doesn't appear until toggled */
+    nav:not(.active) {
+        height: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        visibility: hidden !important;
+    }
+    
+    /* Improve touch targets for mobile */
+    nav ul li a {
+        display: block !important;
+        padding: 12px !important;
+        margin: 0 auto !important;
+        width: 80% !important;
+    }
+    
+    /* Add slight highlight to make touch targets more obvious */
+    nav ul li a:active {
+        background: rgba(255, 62, 108, 0.2) !important;
+    }
+}
+
+/* High-density displays optimization */
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min-resolution: 192dpi) {
+    .slide .item {
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .image-container {
+        background-size: cover;
+    }
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: none) {
+    .nav ul li a:hover::after {
+        width: 0; /* Disable hover underline effect on touch devices */
+    }
+    
+    .slide .item:hover::before {
+        opacity: 0.5; /* Set a consistent overlay for touch devices */
+    }
+    
+    /* Adjust button hover states for touch */
+    .button button:hover,
+    .content button:hover,
+    .view-button:hover,
+    .cta-button:hover {
+        transform: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Extra small phones */
+@media screen and (max-width: 320px) {
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+    
+    .slide .item {
+        height: 180px;
+    }
+    
+    .logo {
+        font-size: 1.4rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+    
+    .service-card {
+        padding: 15px 10px;
+    }
+    
+    .service-card h3 {
+        font-size: 1rem;
+    }
+    
+    .service-card i {
+        font-size: 2rem;
+    }
+}
+
+/* Fix for landscape mode on mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 120px 0 50px;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        margin-bottom: 15px;
+    }
+    
+    .slide {
+        min-height: 350px;
+    }
+    
+    section {
+        padding: 50px 4%;
+    }
+    
+    .modal-content {
+        height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .video-container {
+        height: 60vh;
+    }
+}
+
+/* Print styles for portfolio */
+@media print {
+    header, footer, .button, .hero, .view-button, .content button {
+        display: none !important;
+    }
+    
+    body, .section-title, .service-card, .about-text {
+        color: #000 !important;
+        background: #fff !important;
+    }
+    
+    .section-title::after {
+        background: #000 !important;
+    }
+    
+    .slide .item {
+        page-break-inside: avoid;
+        border: 1px solid #ccc;
+        display: block !important;
+        position: relative !important;
+        width: 80% !important;
+        height: 200px !important;
+        margin: 20px auto !important;
+        transform: none !important;
+        left: 0 !important;
+    }
+    
+    .content {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+} 
