@@ -500,6 +500,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     videoContainer.appendChild(borderEffect);
                     videoWrapper.appendChild(iframe);
                     videoContainer.appendChild(videoWrapper);
+
+                    // Add fallback button to open on YouTube
+                    const openBtn = document.createElement('a');
+                    openBtn.className = 'open-in-youtube';
+                    openBtn.href = videoUrl;
+                    openBtn.target = '_blank';
+                    openBtn.rel = 'noopener';
+                    openBtn.innerHTML = '<i class="fab fa-youtube"></i> Open in YouTube';
+                    videoContainer.appendChild(openBtn);
                 }
             } 
             // If it's already an embed URL, use it directly
@@ -548,6 +557,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 videoContainer.appendChild(borderEffect);
                 videoWrapper.appendChild(iframe);
                 videoContainer.appendChild(videoWrapper);
+
+                // Add fallback button to open on YouTube
+                const openBtn = document.createElement('a');
+                openBtn.className = 'open-in-youtube';
+                openBtn.href = videoUrl;
+                openBtn.target = '_blank';
+                openBtn.rel = 'noopener';
+                openBtn.innerHTML = '<i class="fab fa-youtube"></i> Open in YouTube';
+                videoContainer.appendChild(openBtn);
             }
             else {
                 // For other video sources, use the iframe
