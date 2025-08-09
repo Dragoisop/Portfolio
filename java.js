@@ -443,17 +443,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             // Check for YouTube links and format properly for embedding if needed
-            else if (videoUrl.includes('youtube.com/watch') || videoUrl.includes('youtu.be')) {
+            else if (videoUrl.includes('youtube.com/watch') || videoUrl.includes('youtu.be') || videoUrl.includes('youtube.com/shorts')) {
                 // Extract video ID from YouTube URL
                 let videoId = '';
                 if (videoUrl.includes('youtube.com/watch')) {
                     videoId = new URL(videoUrl).searchParams.get('v');
                 } else if (videoUrl.includes('youtu.be')) {
                     videoId = videoUrl.split('/').pop().split('?')[0];
+                } else if (videoUrl.includes('youtube.com/shorts')) {
+                    const parts = videoUrl.split('/shorts/');
+                    if (parts[1]) {
+                        videoId = parts[1].split('?')[0];
+                    }
                 }
                 
                 if (videoId) {
-                    const embeddedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                    const embeddedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=${location.origin}`;
                     
                     // Create iframe for YouTube videos
                     const iframe = document.createElement('iframe');
@@ -461,6 +466,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     iframe.src = embeddedUrl;
                     iframe.frameBorder = "0";
                     iframe.allowFullscreen = true;
+                    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                    iframe.setAttribute('playsinline', '1');
+                    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
                     
                     // Add same styling elements as for local videos
                     // Add a video wrapper for enhanced styling
@@ -496,7 +504,9 @@ document.addEventListener('DOMContentLoaded', function() {
             } 
             // If it's already an embed URL, use it directly
             else if (!videoUrl.includes('/embed/') && videoUrl.includes('youtube.com')) {
-                const embeddedUrl = videoUrl.replace('youtube.com', 'youtube.com/embed');
+                const base = videoUrl.replace('youtube.com/watch?v=', 'youtube.com/embed/');
+                const hasQuery = base.includes('?');
+                const embeddedUrl = `${base}${hasQuery ? '&' : '?'}autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=${location.origin}`;
                 
                 // Create iframe for YouTube videos
                 const iframe = document.createElement('iframe');
@@ -504,6 +514,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 iframe.src = embeddedUrl;
                 iframe.frameBorder = "0";
                 iframe.allowFullscreen = true;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                iframe.setAttribute('playsinline', '1');
+                iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
                 
                 // Add same styling elements as for local videos
                 // Add a video wrapper for enhanced styling
@@ -543,6 +556,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 iframe.src = videoUrl;
                 iframe.frameBorder = "0";
                 iframe.allowFullscreen = true;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                iframe.setAttribute('playsinline', '1');
+                iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
                 
                 // Add same styling elements as for local videos
                 // Add a video wrapper for enhanced styling
@@ -823,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // About section animation
     function animateAboutSection() {
         const sectionTitle = document.querySelector('#about .section-title');
-        const aboutImage = document.querySelector('.about-image');
+        const aboutImage = document.querySelector('.image-container');
         const aboutText = document.querySelector('.about-text');
         const skillItems = document.querySelectorAll('.skills span');
         
@@ -842,7 +858,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionTitle.style.animation = 'titleRotateIn 1.2s ease-out forwards';
         
         // Animate the image with a reveal effect
-        aboutImage.style.transform = 'translateX(-50px)';
+        aboutImage.style.transform = 'translateX(-100%)';
         aboutImage.style.opacity = '0';
         aboutImage.style.transition = 'all 1s cubic-bezier(0.17, 0.84, 0.44, 1)';
         
@@ -850,7 +866,15 @@ document.addEventListener('DOMContentLoaded', function() {
             aboutImage.style.transform = 'translateX(0)';
             aboutImage.style.opacity = '1';
             
-            // Don't add ripple effect to avoid interference
+            // Add ripple effect to image
+            const ripple = document.createElement('div');
+            ripple.className = 'image-ripple';
+            aboutImage.appendChild(ripple);
+            
+            // Remove ripple after animation
+            setTimeout(() => {
+                aboutImage.removeChild(ripple);
+            }, 1500);
         }, 300);
         
         // Animate the text with a fade-in-up effect
