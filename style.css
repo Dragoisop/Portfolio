@@ -589,7 +589,7 @@ nav ul li a.active::after {
 .image-container {
     width: 100%;
     height: 400px;
-    background: url('Card Images/profile_image.jpg');
+    background: url('about%20me.jpg');
     background-size: cover;
     background-position: center;
     border-radius: 15px;
