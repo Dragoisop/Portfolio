@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --primary-color: #ff3e6c;
-    --secondary-color: #00c8ff;
-    --dark-bg: #121212;
-    --darker-bg: #0a0a0a;
-    --light-bg: #1e1e1e;
-    --text-color: #ffffff;
-    --text-muted: #a0a0a0;
+    /* Updated color palette */
+    --primary-color: #7C3AED; /* Violet */
+    --secondary-color: #06B6D4; /* Cyan */
+    --dark-bg: #0B0B10; /* Deep charcoal */
+    --darker-bg: #08080D; /* Deeper background */
+    --light-bg: #151827; /* Card/background contrast */
+    --text-color: #FFFFFF;
+    --text-muted: #A8B0C5; /* Muted slate */
     --transition: all 0.4s ease;
 }
 
@@ -71,6 +72,7 @@ header {
     justify-content: space-between;
     align-items: center;
     background: rgba(10, 10, 10, 0.8);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: var(--transition);
@@ -266,6 +268,7 @@ nav ul li a.active::after {
         left: 0;
         width: 100%;
         background: rgba(10, 10, 10, 0.95);
+        -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
         padding: 0;
         height: 0;
@@ -394,17 +397,16 @@ nav ul li a.active::after {
     width: 280px;
     height: 380px;
     position: absolute;
+    left: 50%;
     border-radius: 15px;
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
     background-position: center;
     background-size: cover;
-    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, filter 0.4s ease;
     overflow: hidden;
     cursor: pointer;
-    will-change: transform, opacity, left;
+    will-change: transform, opacity;
     transform-origin: center center;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
 }
 
 .slide .item::before {
@@ -418,6 +420,33 @@ nav ul li a.active::after {
     z-index: 1;
     opacity: 0.9;
     transition: all 0.4s ease;
+}
+
+/* New unified animation states for project cards */
+.item.is-active {
+    z-index: 10;
+}
+
+.item.is-left,
+.item.is-right,
+.item.is-far-left,
+.item.is-far-right {
+    z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .slide .item {
+        width: 85%;
+        height: 300px;
+        left: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .slide .item {
+        width: 90%;
+        height: 250px;
+    }
 }
 
 .slide .item:hover::before {
@@ -1096,18 +1125,7 @@ footer p {
         height: 300px;
     }
     
-    /* Hide far items on mobile to improve performance */
-    .slide .item:nth-child(n+5) {
-        display: none;
-    }
-    
-    /* Keep these visible for navigation */
-    .slide .item:nth-child(1),
-    .slide .item:nth-child(2),
-    .slide .item:nth-child(3),
-    .slide .item:nth-child(4) {
-        display: block;
-    }
+    /* Show all items; visibility managed by JS transforms/opacity */
     
     /* Fix services grid for mobile */
     .services-grid {
@@ -1132,6 +1150,7 @@ footer p {
         left: 0;
         width: 100%;
         background: rgba(10, 10, 10, 0.95);
+        -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
         padding: 0;
         height: 0;
@@ -1196,10 +1215,7 @@ footer p {
         height: 250px;
     }
     
-    /* Only show 3 visible items on smallest screens */
-    .slide .item:nth-child(4) {
-        display: none;
-    }
+    /* Keep all items available; JS manages visibility */
     
     .button {
         margin-top: 20px;

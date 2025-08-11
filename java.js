@@ -27,81 +27,63 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Position all items based on active index
     function positionItems() {
+        const isMobile = window.innerWidth <= 768;
+        const activeItemWidth = items[activeIndex] ? items[activeIndex].offsetWidth : 280;
+        const spacing = isMobile ? activeItemWidth * 0.95 : activeItemWidth * 0.85;
+
         items.forEach((item, index) => {
-            // Reset item styles
-            item.style.transition = 'all 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
-            item.style.opacity = '1';
-            item.style.transform = 'perspective(1000px) rotateY(0deg) scale(1)';
-            item.classList.remove('active'); // Remove active class from all items
-            
-            // Calculate position relative to active item
+            item.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, filter 0.4s ease';
+            item.classList.remove('active');
+
             const relativeIndex = getRelativeIndex(index);
-            
-            // Position and style each item based on its relative position to active item
-            if (relativeIndex === 0) { // Active item
+            const offsetX = spacing * relativeIndex;
+
+            if (relativeIndex === 0) {
+                // Active
                 item.style.zIndex = '10';
-                item.style.left = '50%';
-                item.style.transform = 'perspective(1000px) rotateY(0deg) scale(1.1) translateX(-50%)';
-                item.style.filter = 'brightness(1.1) contrast(1.0)';
-                item.classList.add('active'); // Add active class to current active item
-                
-                // Show content for active item
+                item.style.opacity = '1';
+                item.style.filter = 'brightness(1.05)';
+                item.style.transform = `translateX(-50%) translateX(${0}px) scale(1.05)`;
+                item.classList.add('active');
+
                 const content = item.querySelector('.content');
                 if (content) {
                     content.style.opacity = '1';
                     content.style.transform = 'translateY(0)';
                 }
-                
-                // Set up View button click to same function as Watch Reel
+
                 const viewButton = item.querySelector('.view-button');
                 const watchButton = item.querySelector('.content button');
                 if (viewButton && watchButton) {
-                    viewButton.onclick = function() {
-                        watchButton.click(); // Trigger the Watch Reel button click
-                    };
+                    viewButton.onclick = function() { watchButton.click(); };
                 }
-            } 
-            else if (relativeIndex === -1) { // Left of active
-                item.style.zIndex = '5';
-                item.style.left = '30%';
-                item.style.transform = 'perspective(1000px) rotateY(15deg) scale(0.9) translateX(-50%)';
-                item.style.filter = 'brightness(0.7) blur(1px)';
+            } else if (Math.abs(relativeIndex) === 1) {
+                // Immediate neighbors
+                item.style.zIndex = '6';
+                item.style.opacity = '0.9';
+                item.style.filter = 'brightness(0.85)';
+                item.style.transform = `translateX(-50%) translateX(${offsetX}px) scale(0.9)`;
                 hideContent(item);
-            } 
-            else if (relativeIndex === 1) { // Right of active
-                item.style.zIndex = '5';
-                item.style.left = '70%';
-                item.style.transform = 'perspective(1000px) rotateY(-15deg) scale(0.9) translateX(-50%)';
-                item.style.filter = 'brightness(0.7) blur(1px)';
+            } else if (Math.abs(relativeIndex) === 2) {
+                // Far neighbors
+                item.style.zIndex = '4';
+                item.style.opacity = '0.6';
+                item.style.filter = 'brightness(0.7)';
+                item.style.transform = `translateX(-50%) translateX(${offsetX}px) scale(0.8)`;
                 hideContent(item);
-            } 
-            else if (relativeIndex === -2) { // Far left
+            } else {
+                // Off-screen
                 item.style.zIndex = '1';
-                item.style.left = '15%';
-                item.style.transform = 'perspective(1000px) rotateY(30deg) scale(0.7) translateX(-50%)';
-                item.style.filter = 'brightness(0.5) blur(2px)';
-                hideContent(item);
-            } 
-            else if (relativeIndex === 2) { // Far right
-                item.style.zIndex = '1';
-                item.style.left = '85%';
-                item.style.transform = 'perspective(1000px) rotateY(-30deg) scale(0.7) translateX(-50%)';
-                item.style.filter = 'brightness(0.5) blur(2px)';
-                hideContent(item);
-            } 
-            else { // Off-screen items
-                item.style.zIndex = '0';
-                item.style.left = relativeIndex < 0 ? '0%' : '100%';
-                item.style.transform = `perspective(1000px) rotateY(${relativeIndex < 0 ? '40deg' : '-40deg'}) scale(0.5) translateX(-50%)`;
                 item.style.opacity = '0';
+                const clampedOffset = spacing * (relativeIndex < 0 ? -3 : 3);
+                item.style.transform = `translateX(-50%) translateX(${clampedOffset}px) scale(0.7)`;
                 hideContent(item);
             }
         });
-        
-        // Refresh slide height based on the active item
+
         const activeItem = items[activeIndex];
         if (activeItem) {
-            slide.style.height = `${activeItem.offsetHeight * 1.2}px`; // Increased height to accommodate View button
+            slide.style.height = `${activeItem.offsetHeight * 1.2}px`;
         }
     }
     
@@ -1237,58 +1219,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // New function to handle responsive adjustments
     function updateResponsiveness() {
         const screenWidth = window.innerWidth;
-        
-        // Adjust item positioning and styling based on screen size
+        const maxDistance = 2; // hide items further than this from active
+
         if (screenWidth <= 768) {
-            // Mobile/tablet view adjustments
             items.forEach((item, index) => {
                 const relativeIndex = getRelativeIndex(index);
-                
-                // Hide items that are too far from active (improve performance on mobile)
-                if (Math.abs(relativeIndex) > 2) {
-                    item.style.display = 'none';
-                } else {
-                    item.style.display = 'block';
-                    
-                    // Make items more compact on mobile
-                    if (relativeIndex === 0) { // Active item
-                        item.style.left = '50%';
-                        item.style.transform = 'perspective(800px) rotateY(0deg) scale(1) translateX(-50%)';
-                    } else if (relativeIndex === -1) { // Left of active
-                        item.style.left = '25%';
-                        item.style.transform = 'perspective(800px) rotateY(10deg) scale(0.8) translateX(-50%)';
-                    } else if (relativeIndex === 1) { // Right of active
-                        item.style.left = '75%';
-                        item.style.transform = 'perspective(800px) rotateY(-10deg) scale(0.8) translateX(-50%)';
-                    }
-                }
+                // Do not hide with display:none; keep them for navigation
+                item.style.display = 'block';
+                // Positioning/visibility handled by positionItems via opacity/transform
             });
-            
-            // Adjust slide height for mobile
+
             const activeItem = items[activeIndex];
             if (activeItem) {
                 slide.style.height = `${activeItem.offsetHeight * 1.1}px`;
             }
         } else if (screenWidth <= 992) {
-            // Tablet/small desktop adjustments
             items.forEach((item, index) => {
                 const relativeIndex = getRelativeIndex(index);
-                
-                // Show all items but adjust their positioning
                 item.style.display = 'block';
-                
-                if (Math.abs(relativeIndex) > 2) {
-                    item.style.opacity = '0';
-                }
+                // Opacity handled in positionItems
             });
-            
-            // Adjust slide height for tablet
+
             const activeItem = items[activeIndex];
             if (activeItem) {
                 slide.style.height = `${activeItem.offsetHeight * 1.15}px`;
             }
         } else {
-            // Desktop view - show all items
             items.forEach((item) => {
                 item.style.display = 'block';
             });
